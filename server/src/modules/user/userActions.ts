@@ -1,8 +1,8 @@
+import * as argon2 from "argon2";
 import type { RequestHandler } from "express";
-
 import type { IUser } from "./user";
-// Import access to data
 import userRepository from "./userRepository";
+
 // The B of BREAD - Browse (Read All) operation
 const browse: RequestHandler = async (req, res, next) => {
   try {
@@ -62,11 +62,14 @@ const add: RequestHandler = async (req, res, next) => {
       return;
     }
 
-    const newUser: IUser = {
+    const hashedPassword = await argon2.hash(user.password);
+    console.log(hashedPassword);
+
+    const newUser = {
       lastname: user.lastname,
       firstname: user.firstname,
       email: user.email,
-      password: user.password,
+      password: hashedPassword,
       image_url: "http://test.com",
       created_at: new Date(),
     };
@@ -90,6 +93,13 @@ const userToEdit: RequestHandler = async (req, res, next) => {
   try {
     const id = Number(req.params.id);
     const userData = req.body;
+
+    const userIsExist = await userRepository.read(id);
+
+    if (!userIsExist) {
+      res.send(400).json({ message: "Error: user doesn't exist" });
+      return;
+    }
 
     const result = await userRepository.update(id, userData);
 

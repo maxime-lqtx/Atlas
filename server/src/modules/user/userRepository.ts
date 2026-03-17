@@ -1,3 +1,4 @@
+import type { RowDataPacket } from "mysql2";
 import databaseClient from "../../../database/client";
 import type { Result, Rows } from "../../../database/client";
 import type { IUser } from "./user";
@@ -41,6 +42,15 @@ class UserRepository {
 
     // Return the array of users
     return rows as IUser[];
+  }
+
+  // Read the user by email
+  async readByEmail(email: string): Promise<IUser | null> {
+    const [rows] = await databaseClient.query<RowDataPacket[]>(
+      "SELECT * from user WHERE email= ?",
+      [email],
+    );
+    return rows[0] as IUser;
   }
 
   // The U of CRUD - Update operation
