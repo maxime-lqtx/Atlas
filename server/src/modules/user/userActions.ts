@@ -1,5 +1,6 @@
 import * as argon2 from "argon2";
-import type { RequestHandler } from "express";
+import type { RequestHandler, Response } from "express";
+import type { AuthRequest } from "../../middleware/verifyToken";
 import type { IUser } from "./user";
 import userRepository from "./userRepository";
 
@@ -46,6 +47,19 @@ const read: RequestHandler = async (req, res, next) => {
   }
 };
 
+const readMe: RequestHandler = async (
+  req: AuthRequest,
+  res: Response,
+  next,
+) => {
+  try {
+    res.status(200).json(req.user);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Server Error !" });
+  }
+};
+
 // The A of BREAD - Add (Create) operation
 const add: RequestHandler = async (req, res, next) => {
   try {
@@ -85,7 +99,7 @@ const add: RequestHandler = async (req, res, next) => {
   } catch (err) {
     // Pass any errors to the error-handling middleware
     next(err);
-    res.status(500).json({ message: "Erreur server !" });
+    res.status(500).json({ message: "Server Error !" });
   }
 };
 
@@ -110,7 +124,7 @@ const userToEdit: RequestHandler = async (req, res, next) => {
     res.status(200).json({ message: "User has been updated !" });
   } catch (error) {
     // console.error(error);
-    res.status(500).json({ message: "Error server !" });
+    res.status(500).json({ message: "Server error !" });
   }
 };
 
@@ -132,9 +146,9 @@ const userToDelete: RequestHandler = async (req, res, next) => {
     return;
   } catch (error) {
     console.log(error);
-    res.status(500).json({ message: "Error server !" });
+    res.status(500).json({ message: "Server Error !" });
     return;
   }
 };
 
-export default { browse, read, add, userToEdit, userToDelete };
+export default { browse, read, readMe, add, userToEdit, userToDelete };

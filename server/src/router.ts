@@ -1,5 +1,6 @@
 import express from "express";
 import authController from "./auth/controller/authController";
+import { verifyToken } from "./middleware/verifyToken";
 import userActions from "./modules/user/userActions";
 
 const router = express.Router();
@@ -17,6 +18,7 @@ router.delete("/user/:id", userActions.userToDelete);
 
 // login root
 router.post("/login", authController.login);
+router.get("/me", verifyToken, userActions.readMe);
 
 /* ************************************************************************* */
 
