@@ -1,6 +1,7 @@
 import express from "express";
 import authController from "./auth/controller/authController";
 import { verifyToken } from "./middleware/verifyToken";
+import projectActions from "./modules/project/projectActions";
 import userActions from "./modules/user/userActions";
 
 const router = express.Router();
@@ -19,6 +20,12 @@ router.delete("/user/:id", userActions.userToDelete);
 // login root
 router.post("/login", authController.login);
 router.get("/me", verifyToken, userActions.readMe);
+
+// project root
+router.get("/projects", verifyToken, projectActions.read);
+router.post("/projects", verifyToken, projectActions.add);
+router.put("/project/:id", verifyToken, projectActions.projectToEdit);
+router.delete("/project/:id", verifyToken, projectActions.projectToDelete);
 
 /* ************************************************************************* */
 

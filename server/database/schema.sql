@@ -18,7 +18,7 @@ CREATE TABLE project (
     description VARCHAR(255),
     owner_id INT NOT NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT fk_project_owner FOREIGN KEY (owner_id) REFERENCES users(id) ON DELETE CASCADE
+    CONSTRAINT fk_project_owner FOREIGN KEY (owner_id) REFERENCES user(id) ON DELETE CASCADE
 );
 
 CREATE TABLE member (
@@ -27,8 +27,8 @@ CREATE TABLE member (
     role ENUM('admin', 'editor', 'viewer') DEFAULT 'editor',
     joined_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (project_id, user_id),
-    CONSTRAINT fk_member_project FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE,
-    CONSTRAINT fk_member_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+    CONSTRAINT fk_member_project FOREIGN KEY (project_id) REFERENCES project(id) ON DELETE CASCADE,
+    CONSTRAINT fk_member_user FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE
 );
 
 CREATE TABLE category (
@@ -47,8 +47,8 @@ CREATE TABLE task (
     assigned_to INT,
     category_id INT,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT fk_task_project FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE,
-    CONSTRAINT fk_task_creator FOREIGN KEY (created_by) REFERENCES users(id) ON DELETE RESTRICT,
-    CONSTRAINT fk_task_assignee FOREIGN KEY (assigned_to) REFERENCES users(id) ON DELETE SET NULL,
-    CONSTRAINT fk_task_category FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE SET NULL
+    CONSTRAINT fk_task_project FOREIGN KEY (project_id) REFERENCES project(id) ON DELETE CASCADE,
+    CONSTRAINT fk_task_creator FOREIGN KEY (created_by) REFERENCES user(id) ON DELETE RESTRICT,
+    CONSTRAINT fk_task_assignee FOREIGN KEY (assigned_to) REFERENCES user(id) ON DELETE SET NULL,
+    CONSTRAINT fk_task_category FOREIGN KEY (category_id) REFERENCES category(id) ON DELETE SET NULL
 );

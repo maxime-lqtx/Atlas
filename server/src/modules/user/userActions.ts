@@ -98,7 +98,6 @@ const add: RequestHandler = async (req, res, next) => {
     res.status(201).json({ insertId });
   } catch (err) {
     // Pass any errors to the error-handling middleware
-    next(err);
     res.status(500).json({ message: "Server Error !" });
   }
 };
@@ -142,7 +141,7 @@ const userToDelete: RequestHandler = async (req, res, next) => {
       return;
     }
 
-    res.status(200).json({ message: "User has been deleted !" });
+    res.status(204).json({ message: "User has been deleted !" });
     return;
   } catch (error) {
     console.log(error);
