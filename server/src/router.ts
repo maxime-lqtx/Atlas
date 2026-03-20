@@ -2,6 +2,7 @@ import express from "express";
 import authController from "./auth/controller/authController";
 import { verifyToken } from "./middleware/verifyToken";
 import categoryActions from "./modules/category/categoryActions";
+import memberActions from "./modules/member/memberActions";
 import projectActions from "./modules/project/projectActions";
 import taskActions from "./modules/task/taskActions";
 import userActions from "./modules/user/userActions";
@@ -41,6 +42,11 @@ router.get("/projects/:id/tasks", verifyToken, taskActions.read);
 router.post("/tasks", verifyToken, taskActions.add);
 router.patch("/tasks/:id/status", verifyToken, taskActions.updateStatus);
 //  update et delete à faire
+
+// member root
+router.post("/projects/:id/members", verifyToken, memberActions.add);
+router.get("/projects/:id/members", verifyToken, memberActions.read);
+// update et delete à faire
 
 /* ************************************************************************* */
 
