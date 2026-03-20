@@ -3,56 +3,192 @@ import "./App.css";
 function App() {
   return (
     <>
-      <header>
-        <h1 className="logo">JS Monorepo</h1>
-      </header>
-
-      <nav className="navbar">
-        <ul>
-          <li>
+      <head>
+        <link href="/src/style.css" rel="stylesheet" />
+      </head>
+      <body>
+        <div className="navbar py-8 flex justify-between">
+          <a href="ht" className="btn btn-ghost text-xl">
+            Atlas
+          </a>
+          <div className="gap-10 flex justify-around ">
             <a
-              href="https://github.com/WildCodeSchool/create-js-monorepo"
-              target="_blank"
-              rel="noopener noreferrer"
+              href="#s"
+              className="btn font-bold bg-yellow-950 w-30 border-0 text-white"
             >
-              <svg
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                x="0px"
-                y="0px"
-                width="30"
-                height="30"
-                viewBox="0 0 50 50"
-              >
-                <path
-                  d="M17.791,46.836C18.502,46.53,19,45.823,19,45v-5.4c0-0.197,0.016-0.402,0.041-0.61C19.027,38.994,19.014,38.997,19,39 c0,0-3,0-3.6,0c-1.5,0-2.8-0.6-3.4-1.8c-0.7-1.3-1-3.5-2.8-4.7C8.9,32.3,9.1,32,9.7,32c0.6,0.1,1.9,0.9,2.7,2c0.9,1.1,1.8,2,3.4,2 c2.487,0,3.82-0.125,4.622-0.555C21.356,34.056,22.649,33,24,33v-0.025c-5.668-0.182-9.289-2.066-10.975-4.975 c-3.665,0.042-6.856,0.405-8.677,0.707c-0.058-0.327-0.108-0.656-0.151-0.987c1.797-0.296,4.843-0.647,8.345-0.714 c-0.112-0.276-0.209-0.559-0.291-0.849c-3.511-0.178-6.541-0.039-8.187,0.097c-0.02-0.332-0.047-0.663-0.051-0.999 c1.649-0.135,4.597-0.27,8.018-0.111c-0.079-0.5-0.13-1.011-0.13-1.543c0-1.7,0.6-3.5,1.7-5c-0.5-1.7-1.2-5.3,0.2-6.6 c2.7,0,4.6,1.3,5.5,2.1C21,13.4,22.9,13,25,13s4,0.4,5.6,1.1c0.9-0.8,2.8-2.1,5.5-2.1c1.5,1.4,0.7,5,0.2,6.6c1.1,1.5,1.7,3.2,1.6,5 c0,0.484-0.045,0.951-0.11,1.409c3.499-0.172,6.527-0.034,8.204,0.102c-0.002,0.337-0.033,0.666-0.051,0.999 c-1.671-0.138-4.775-0.28-8.359-0.089c-0.089,0.336-0.197,0.663-0.325,0.98c3.546,0.046,6.665,0.389,8.548,0.689 c-0.043,0.332-0.093,0.661-0.151,0.987c-1.912-0.306-5.171-0.664-8.879-0.682C35.112,30.873,31.557,32.75,26,32.969V33 c2.6,0,5,3.9,5,6.6V45c0,0.823,0.498,1.53,1.209,1.836C41.37,43.804,48,35.164,48,25C48,12.318,37.683,2,25,2S2,12.318,2,25 C2,35.164,8.63,43.804,17.791,46.836z"
-                  fill="#eee"
-                />
-              </svg>
-              Github
+              Login
             </a>
-          </li>
-        </ul>
-      </nav>
+            <a
+              href="#s"
+              className="btn font-bold w-30 bg-white border-0 hover:shadow-none shadow-none"
+            >
+              Register
+            </a>
+          </div>
+        </div>
 
-      <main className="text-box">
-        <hgroup className="block-primary">
-          <h2 className="block-primary-main">JS Monorepo</h2>
-          <p className="block-primary-sub">Votre framework JavaScript</p>
-        </hgroup>
-        <p>Vous avez lu le README ?</p>
-      </main>
+        <div className="hero h-150 bg-yellow-950 text-white">
+          <div className="hero-content flex-col lg:flex-row-reverse">
+            <img
+              alt=""
+              src="https://img.daisyui.com/images/stock/photo-1635805737707-575885ab0820.webp"
+              className="max-w-sm rounded-lg shadow-2xl"
+            />
+            <div>
+              <h1 className="text-5xl font-bold flex-wrap">
+                Gérez vos projets en toute simplicité !
+              </h1>
+              <p className="py-6">
+                Retrouvez tout vos projets et tâches au même endroit pour plus
+                de rapidité
+              </p>
+              <button type="button" className="btn">
+                Commencer
+              </button>
+            </div>
+          </div>
+        </div>
 
-      <footer>
-        Développé par la&nbsp;
-        <a
-          href="https://www.wildcodeschool.com/"
-          className="wcs"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Wild Code School
-        </a>
+        <div className="h-170 flex flex-col justify-center items-center">
+          <h2 className="font-bold text-4xl pb-10">Gérez vos projets</h2>
+          <div className="hero  ">
+            <div className="hero-content flex-col lg:flex-row">
+              <img
+                alt="df"
+                src="https://img.daisyui.com/images/stock/photo-1635805737707-575885ab0820.webp"
+                className="max-w-sm rounded-lg shadow-2xl"
+              />
+              <div>
+                <h3 className="text-3xl font-bold">
+                  Gérez vos projets en toute simplicité !
+                </h3>
+                <p className="py-6">
+                  Retrouvez tout vos projets et tâches au même endroit pour plus
+                  de rapiditéRetrouvez tout vos projets et tâches au même
+                  endroit pour plus de rapiditéRetrouvez tout vos projets et
+                  tâches au même endroit pour plus de rapidité
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="text-center bg-yellow-950 p-25">
+          <h2 className="font-bold text-white text-3xl">TITRE A CHANGER</h2>
+          <div className="flex justify-center gap-10 p-20 ">
+            <div className="card bg-base-100 w-96 h-100 shadow-sm">
+              <figure className="px-10 pt-10">
+                <img
+                  src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
+                  alt="Shoes"
+                  className="rounded-xl"
+                />
+              </figure>
+              <div className="card-body items-center text-center">
+                <h2 className="card-title">Card Title</h2>
+                <p>
+                  A card component has a figure, a body part, and inside body
+                  there are title and actions parts
+                </p>
+              </div>
+            </div>
+            <div className="card bg-base-100 w-96 h-100 shadow-sm">
+              <figure className="px-10 pt-10">
+                <img
+                  src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
+                  alt="Shoes"
+                  className="rounded-xl"
+                />
+              </figure>
+              <div className="card-body items-center text-center">
+                <h2 className="card-title">Card Title</h2>
+                <p>
+                  A card component has a figure, a body part, and inside body
+                  there are title and actions parts
+                </p>
+              </div>
+            </div>
+            <div className="card bg-base-100 w-96 h-100 shadow-sm">
+              <figure className="px-10 pt-10">
+                <img
+                  src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
+                  alt="Shoes"
+                  className="rounded-xl"
+                />
+              </figure>
+              <div className="card-body items-center text-center">
+                <h2 className="card-title">Card Title</h2>
+                <p>
+                  A card component has a figure, a body part, and inside body
+                  there are title and actions parts
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </body>
+
+      <footer className="footer footer-horizontal footer-center bg-black text-white p-10">
+        <nav className="grid grid-flow-col gap-4 justify-center">
+          <a href="sd" className="link link-hover">
+            About us
+          </a>
+          <a href="sd" className="link link-hover">
+            Contact
+          </a>
+          <a href="sd" className="link link-hover">
+            Jobs
+          </a>
+          <a href="sd" className="link link-hover">
+            Press kit
+          </a>
+        </nav>
+        <nav>
+          <div className="grid grid-flow-col gap-4">
+            <a href="sd">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                className="fill-current"
+              >
+                <title>sdqsd</title>
+                <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z" />
+              </svg>
+            </a>
+            <a href="dsdqs">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                className="fill-current"
+              >
+                <title>dsfsdf</title>
+                <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z" />
+              </svg>
+            </a>
+            <a href="sdsd">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                className="fill-current"
+              >
+                <title>sqdqsdqsd</title>
+                <path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z" />
+              </svg>
+            </a>
+          </div>
+        </nav>
+        <aside>
+          <p>
+            Copyright © {new Date().getFullYear()} - All right reserved by ACME
+            Industries Ltd
+          </p>
+        </aside>
       </footer>
     </>
   );
