@@ -13,9 +13,10 @@ const login: RequestHandler = async (req, res): Promise<void> => {
 
     // get email and password
     const { email, password } = req.body;
+    console.log(req.body);
 
     const emailIsExist = await userRepository.readByEmail(email);
-
+    console.log(emailIsExist);
     //  if email doesn't exist
     if (!emailIsExist) {
       res.status(401).json({ message: "Invalid credentials" });
@@ -29,7 +30,7 @@ const login: RequestHandler = async (req, res): Promise<void> => {
 
     // if the password is good ?
     if (!isValidPassword) {
-      res.status(401).json({ message: "Invalid credentials" });
+      res.status(401).json({ message: "Invalid password" });
       return;
     }
 
@@ -51,6 +52,8 @@ const login: RequestHandler = async (req, res): Promise<void> => {
       },
     );
 
+    console.log(token);
+
     // send token in cookies
     res.cookie("access_token", token, {
       expires: new Date(Date.now() + 8 * 3600000),
@@ -61,6 +64,7 @@ const login: RequestHandler = async (req, res): Promise<void> => {
       user: {
         firstname: emailIsExist.firstname,
         email: emailIsExist.email,
+        token: token,
       },
     });
   } catch (error) {

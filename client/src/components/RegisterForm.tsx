@@ -1,0 +1,134 @@
+import type { FormEvent } from "react";
+import { useNavigate } from "react-router";
+
+export default function RegisterForm() {
+  const navigate = useNavigate();
+
+  const handleRegister = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const form = e.currentTarget;
+    const formData = new FormData(form);
+
+    const payload = {
+      firstname: formData.get("firstname"),
+      lastname: formData.get("lastname"),
+      email: formData.get("email"),
+      password: formData.get("password"),
+      image_url: "http://test.com",
+    };
+
+    // console.log(payload)
+
+    try {
+      const response = await fetch("http://localhost:3310/users", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      if (response.ok) {
+        alert("Compte créé !");
+        navigate("/login");
+      } else {
+        const errorData = await response.json();
+        console.error("Erreur backend:", errorData.message);
+      }
+    } catch (error) {
+      console.error("Erreur réseau:", error);
+    }
+  };
+  return (
+    <div className="card w-full max-w-lg bg-white shadow-2xl border border-amber-100">
+      <form className="card-body" onSubmit={handleRegister}>
+        <h2 className="text-3xl font-bold text-amber-950 text-center mb-6">
+          Créer un compte
+        </h2>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="form-control">
+            <label className="label" htmlFor="firstname">
+              <span className="label-text text-amber-900 font-semibold">
+                Prénom
+              </span>
+            </label>
+            <input
+              name="firstname"
+              type="text"
+              placeholder="Jean"
+              className="input input-bordered border-amber-200 focus:border-amber-500 focus:outline-none"
+              required
+            />
+          </div>
+          <div className="form-control">
+            <label className="label" htmlFor="lastname">
+              <span className="label-text text-amber-900 font-semibold">
+                Nom
+              </span>
+            </label>
+            <input
+              name="lastname"
+              type="text"
+              placeholder="Dupont"
+              className="input input-bordered border-amber-200 focus:border-amber-500 focus:outline-none"
+              required
+            />
+          </div>
+        </div>
+
+        <div className="form-control mt-4">
+          <label className="label" htmlFor="email">
+            <span className="label-text text-amber-900 font-semibold">
+              Email
+            </span>
+          </label>
+          <input
+            name="email"
+            type="email"
+            placeholder="votre@email.com"
+            className="input input-bordered border-amber-200 focus:border-amber-500 focus:outline-none"
+            required
+          />
+        </div>
+
+        <div className="form-control mt-4">
+          <label className="label" htmlFor="password">
+            <span className="label-text text-amber-900 font-semibold">
+              Mot de passe
+            </span>
+          </label>
+          <input
+            name="password"
+            type="password"
+            placeholder="Minimum 8 caractères"
+            className="input input-bordered border-amber-200 focus:border-amber-500 focus:outline-none"
+            required
+          />
+        </div>
+
+        <div className="form-control mt-4">
+          <label className="label" htmlFor="image_url">
+            <span className="label-text text-amber-900 font-semibold">
+              Photo de profil
+            </span>
+          </label>
+          <input
+            name="image_url"
+            type="file"
+            className="file-input file-input-bordered w-full border-amber-200 focus:outline-none file:bg-amber-100 file:text-amber-800 file:border-none"
+            accept="image/*"
+          />
+        </div>
+
+        <div className="form-control text-center mt-8">
+          <button
+            type="submit"
+            className="btn bg-amber-600 hover:bg-amber-700 text-white border-none rounded-xl"
+          >
+            S'inscrire
+          </button>
+        </div>
+      </form>
+    </div>
+  );
+}
