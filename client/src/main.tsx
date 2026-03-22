@@ -7,6 +7,7 @@ import { RouterProvider, createBrowserRouter } from "react-router";
 
 // Import the main app component
 import App from "./App";
+import DashboardLayout from "./components/DashboardLayout";
 import LoginForm from "./components/LoginForm";
 import RegisterForm from "./components/RegisterForm";
 
@@ -40,6 +41,10 @@ const router = createBrowserRouter([
         <RegisterForm />
       </div>
     ),
+  },
+  {
+    path: "/dashboard",
+    element: <DashboardLayout />,
   },
 
   // Try adding a new route! For example, "/about" with an About component
