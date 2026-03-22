@@ -9,6 +9,7 @@ import { RouterProvider, createBrowserRouter } from "react-router";
 import App from "./App";
 import DashboardLayout from "./components/DashboardLayout";
 import LoginForm from "./components/LoginForm";
+import ProjectList from "./components/ProjectList";
 import RegisterForm from "./components/RegisterForm";
 
 // Import additional components for new routes
@@ -45,6 +46,12 @@ const router = createBrowserRouter([
   {
     path: "/dashboard",
     element: <DashboardLayout />,
+    children: [
+      {
+        index: true,
+        element: <ProjectList />,
+      },
+    ],
   },
 
   // Try adding a new route! For example, "/about" with an About component

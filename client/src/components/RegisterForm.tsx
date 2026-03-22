@@ -39,16 +39,16 @@ export default function RegisterForm() {
     }
   };
   return (
-    <div className="card w-full max-w-lg bg-white shadow-2xl border border-amber-100">
+    <div className="card w-full max-w-lg bg-amber-950 shadow-2xl border border-amber-300">
       <form className="card-body" onSubmit={handleRegister}>
-        <h2 className="text-3xl font-bold text-amber-950 text-center mb-6">
+        <h2 className="text-3xl font-bold text-amber-100 text-center mb-6">
           Créer un compte
         </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="form-control">
             <label className="label" htmlFor="firstname">
-              <span className="label-text text-amber-900 font-semibold">
+              <span className="label-text text-amber-400 font-semibold">
                 Prénom
               </span>
             </label>
@@ -56,13 +56,13 @@ export default function RegisterForm() {
               name="firstname"
               type="text"
               placeholder="Jean"
-              className="input input-bordered border-amber-200 focus:border-amber-500 focus:outline-none"
+              className="input input-bordered border-amber-200 focus:border-amber-500 bg-amber-100 focus:outline-none"
               required
             />
           </div>
           <div className="form-control">
             <label className="label" htmlFor="lastname">
-              <span className="label-text text-amber-900 font-semibold">
+              <span className="label-text text-amber-400 font-semibold">
                 Nom
               </span>
             </label>
@@ -70,15 +70,15 @@ export default function RegisterForm() {
               name="lastname"
               type="text"
               placeholder="Dupont"
-              className="input input-bordered border-amber-200 focus:border-amber-500 focus:outline-none"
+              className="input input-bordered border-amber-200 focus:border-amber-500 bg-amber-100 focus:outline-none"
               required
             />
           </div>
         </div>
 
-        <div className="form-control mt-4">
+        <div className="form-control flex flex-col mt-4">
           <label className="label" htmlFor="email">
-            <span className="label-text text-amber-900 font-semibold">
+            <span className="label-text text-amber-400 font-semibold">
               Email
             </span>
           </label>
@@ -86,14 +86,14 @@ export default function RegisterForm() {
             name="email"
             type="email"
             placeholder="votre@email.com"
-            className="input input-bordered border-amber-200 focus:border-amber-500 focus:outline-none"
+            className="input input-bordered border-amber-200 bg-amber-100 focus:border-amber-500 focus:outline-none"
             required
           />
         </div>
 
-        <div className="form-control mt-4">
+        <div className="form-control flex flex-col mt-4">
           <label className="label" htmlFor="password">
-            <span className="label-text text-amber-900 font-semibold">
+            <span className="label-text text-amber-400  font-semibold">
               Mot de passe
             </span>
           </label>
@@ -101,14 +101,14 @@ export default function RegisterForm() {
             name="password"
             type="password"
             placeholder="Minimum 8 caractères"
-            className="input input-bordered border-amber-200 focus:border-amber-500 focus:outline-none"
+            className="input input-bordered border-amber-200 bg-amber-100 focus:border-amber-500 focus:outline-none"
             required
           />
         </div>
 
         <div className="form-control mt-4">
           <label className="label" htmlFor="image_url">
-            <span className="label-text text-amber-900 font-semibold">
+            <span className="label-text text-amber-400 font-semibold">
               Photo de profil
             </span>
           </label>
@@ -123,7 +123,7 @@ export default function RegisterForm() {
         <div className="form-control text-center mt-8">
           <button
             type="submit"
-            className="btn bg-amber-600 hover:bg-amber-700 text-white border-none rounded-xl"
+            className="btn bg-amber-800 hover:bg-amber-900 text-white border-none rounded-xl"
           >
             S'inscrire
           </button>

@@ -31,15 +31,15 @@ export default function LoginForm() {
   };
 
   return (
-    <div className="card w-full max-w-md bg-white shadow-2xl border border-amber-100">
-      <form className="card-body" onSubmit={handleSubmit}>
-        <h2 className="text-3xl font-bold text-amber-950 text-center mb-6">
+    <div className="card w-full max-w-md shadow-2xl border bg-amber-950 border-amber-300">
+      <form className="card-body items-center" onSubmit={handleSubmit}>
+        <h2 className="text-3xl font-bold text-amber-100 text-center mb-6">
           Connexion
         </h2>
 
         <div className="form-control">
           <label className="label" htmlFor="email">
-            <span className="label-text text-amber-900 font-semibold">
+            <span className="label-text text-amber-400  font-semibold">
               Email
             </span>
           </label>
@@ -47,14 +47,14 @@ export default function LoginForm() {
             name="email"
             type="email"
             placeholder="votre@email.com"
-            className="input input-bordered border-amber-200 focus:border-amber-500 focus:outline-none"
+            className="input input-bordered text-amber-950 border-amber-200  bg-amber-100 focus:outline-none"
             required
           />
         </div>
 
-        <div className="form-control mt-4">
+        <div className="form-control">
           <label className="label" htmlFor="password">
-            <span className="label-text text-amber-900 font-semibold">
+            <span className="label-text text-amber-400  font-semibold">
               Mot de passe
             </span>
           </label>
@@ -62,18 +62,18 @@ export default function LoginForm() {
             name="password"
             type="password"
             placeholder="••••••••"
-            className="input input-bordered border-amber-200 focus:border-amber-500 focus:outline-none"
+            className="input input-bordered text-amber-950 focus:border-amber-500 bg-amber-100 focus:outline-none"
             required
           />
+        </div>
 
-          <div className="label">
-            <a
-              href="#forgot"
-              className="label-text-alt link link-hover text-amber-700 font-medium"
-            >
-              Mot de passe oublié ?
-            </a>
-          </div>
+        <div className="label">
+          <a
+            href="#forgot"
+            className="label-text-alt link link-hover text-amber-600 font-medium"
+          >
+            Mot de passe oublié ?
+          </a>
         </div>
 
         <div className="form-control text-center mt-8">

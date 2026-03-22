@@ -2,7 +2,7 @@ import "./App.css";
 
 function App() {
   return (
-    <div className="min-h-screen bg-base-100">
+    <div className="min-h-screen bg-amber-100">
       <nav className="navbar container mx-auto bg-base-100 px-4 py-4">
         <div className="flex-1">
           <a
@@ -13,11 +13,8 @@ function App() {
           </a>
         </div>
         <div className="flex-none gap-2">
-          <div className="hidden items-center gap-4 sm:flex">
-            <a
-              href="/login"
-              className="btn btn-ghost text-amber-950 hover:bg-amber-100"
-            >
+          <div className="hidden items-center font-bold gap-10 sm:flex">
+            <a href="/login" className=" border-0 bg-0 text-amber-950">
               Login
             </a>
             <a
