@@ -1,28 +1,28 @@
-import { ReactElement, useEffect, useState } from "react";
-import { useParams } from "react-router";
+// import { useEffect, useState } from "react";
+// import { useParams } from "react-router";
 
 export default function NewMemberModal() {
   // j'ai besoin de quoi ?
   // project_id, user_id de la personne qu'on ajoute
-  const projectId = useParams();
-  const [users, setUsers] = useState([]);
-  const [error, setError] = useState<string | unknown>();
+  // const projectId = useParams();
+  // const [users, setUsers] = useState([]);
+  // const [error, setError] = useState<string | unknown>();
 
   // console.log(projectId);
   // console.log(users);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch("http://localhost:3310/users");
-        const data = await response.json();
-        setUsers(data);
-      } catch (error) {
-        setError(error);
-      }
-    };
-    fetchData();
-  }, []);
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const response = await fetch("http://localhost:3310/users");
+  //       const data = await response.json();
+  //       setUsers(data);
+  //     } catch (error) {
+  //       setError(error);
+  //     }
+  //   };
+  //   fetchData();
+  // }, []);
 
   // fonction pour la recherche des users
 
@@ -54,8 +54,6 @@ export default function NewMemberModal() {
           Ajouter un membre
         </button>
       </form>
-      {/* modal avec une barre de recherche par email et 
-        un bouton ajouter*/}
     </>
   );
 }
