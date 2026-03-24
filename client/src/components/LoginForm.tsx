@@ -21,23 +21,25 @@ export default function LoginForm() {
       });
 
       if (!response.ok) throw new Error("Identifiants invalides");
-
       const result = await response.json();
+      localStorage.setItem("user", JSON.stringify(result.user));
       console.log("Succès:", result);
-      navigate("#");
+      navigate("/Dashboard");
     } catch (err: unknown) {
       throw new Error("Erreur d'envoi au serveur !");
     }
   };
 
   return (
-    <div className="card w-full max-w-md shadow-2xl border bg-amber-950 border-amber-300">
-      <form className="card-body items-center" onSubmit={handleSubmit}>
+    <div className="card w-full flex flex-col max-w-md p-5 rounded-xl bg-amber-950 shadow-amber-950 shadow-2xl">
+      <form
+        className="card-body flex justify-center w-100"
+        onSubmit={handleSubmit}
+      >
         <h2 className="text-3xl font-bold text-amber-100 text-center mb-6">
           Connexion
         </h2>
-
-        <div className="form-control">
+        <div className="form-control ">
           <label className="label" htmlFor="email">
             <span className="label-text text-amber-400  font-semibold">
               Email
@@ -47,11 +49,10 @@ export default function LoginForm() {
             name="email"
             type="email"
             placeholder="votre@email.com"
-            className="input input-bordered text-amber-950 border-amber-200  bg-amber-100 focus:outline-none"
+            className="input text-amber-950 border-amber-200  bg-amber-100 focus:outline-none"
             required
           />
         </div>
-
         <div className="form-control">
           <label className="label" htmlFor="password">
             <span className="label-text text-amber-400  font-semibold">

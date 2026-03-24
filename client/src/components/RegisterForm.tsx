@@ -39,9 +39,9 @@ export default function RegisterForm() {
     }
   };
   return (
-    <div className="card w-full max-w-lg bg-amber-950 shadow-2xl border border-amber-300">
+    <div className="card w-full max-w-lg rounded-xl bg-amber-950 shadow-amber-950 shadow-2xl p-3">
       <form className="card-body" onSubmit={handleRegister}>
-        <h2 className="text-3xl font-bold text-amber-100 text-center mb-6">
+        <h2 className="text-3xl font-bold text-amber-100 text-center m-10">
           Créer un compte
         </h2>
 

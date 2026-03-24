@@ -1,6 +1,19 @@
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 
 const Sidebar = () => {
+  const Navigate = useNavigate();
+  const handleLogout = async () => {
+    try {
+      await fetch("http://localhost:3310/logout", {
+        method: "POST",
+        credentials: "include",
+      });
+    } catch (error) {
+      console.error("Erreur lors de la déconnexion serveur", error);
+    }
+    localStorage.removeItem("user");
+    Navigate("/login", { replace: true });
+  };
   return (
     <ul className="menu p-4 w-80 min-h-full bg-[#3e2723] text-[#d7ccc8] border-r border-[#2d1d1a]">
       <li className="mb-6">
@@ -44,6 +57,7 @@ const Sidebar = () => {
       <li className="mt-auto pt-4">
         <button
           type="button"
+          onClick={handleLogout}
           className="btn border-[#795548] text-[#d2b48c] btn-outline hover:bg-[#c0392b] hover:border-[#c0392b] hover:text-white btn-sm transition-all duration-300"
         >
           Déconnexion

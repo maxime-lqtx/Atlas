@@ -25,6 +25,7 @@ router.post("/users", userActions.add);
 // login root
 router.post("/login", authController.login);
 router.get("/me", verifyToken, userActions.readMe);
+router.post("/logout", authController.logout);
 
 // project root
 router.get("/projects", verifyToken, projectActions.read);

@@ -73,4 +73,16 @@ const login: RequestHandler = async (req, res): Promise<void> => {
   }
 };
 
-export default { login };
+const logout: RequestHandler = (req, res) => {
+  // clear le token sur tout le domaine
+  res.clearCookie("access_token", {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax",
+    path: "/",
+  });
+
+  res.status(200).json({ message: "Success: User disconnected !" });
+};
+
+export default { login, logout };

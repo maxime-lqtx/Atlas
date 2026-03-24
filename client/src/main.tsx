@@ -1,7 +1,12 @@
 // Import necessary modules from React and React Router
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { RouterProvider, createBrowserRouter } from "react-router";
+import {
+  Navigate,
+  Outlet,
+  RouterProvider,
+  createBrowserRouter,
+} from "react-router";
 
 /* ************************************************************************* */
 
@@ -9,6 +14,7 @@ import { RouterProvider, createBrowserRouter } from "react-router";
 import App from "./App";
 import DashboardLayout from "./components/DashboardLayout";
 import LoginForm from "./components/LoginForm";
+import ProjectDetails from "./components/ProjectDetails";
 import ProjectList from "./components/ProjectList";
 import RegisterForm from "./components/RegisterForm";
 
@@ -20,41 +26,63 @@ import RegisterForm from "./components/RegisterForm";
 
 /* ************************************************************************* */
 
-// Create router configuration with routes
-// You can add more routes as you build out your app!
+const isAuthenticated = () => localStorage.getItem("user") !== null;
+
+const ProtectedRoute = () => {
+  return isAuthenticated() ? <Outlet /> : <Navigate to="/login" replace />;
+};
+
+const PublicRoute = () => {
+  return !isAuthenticated() ? <Outlet /> : <Navigate to="/dashboard" replace />;
+};
+
 const router = createBrowserRouter([
   {
-    path: "/", // The root path
-    element: <App />, // Renders the App component for the home page
+    path: "/",
+    element: <App />,
   },
+  // routes non connecté
   {
-    path: "/login",
-    element: (
-      <div className="flex justify-center items-center py-20 mt-20 ">
-        <LoginForm />
-      </div>
-    ),
-  },
-  {
-    path: "/register",
-    element: (
-      <div className="flex justify-center items-center py-20 mt-20">
-        <RegisterForm />
-      </div>
-    ),
-  },
-  {
-    path: "/dashboard",
-    element: <DashboardLayout />,
+    element: <PublicRoute />,
     children: [
       {
-        index: true,
-        element: <ProjectList />,
+        path: "/login",
+        element: (
+          <div className="flex justify-center items-center py-20">
+            <LoginForm />
+          </div>
+        ),
+      },
+      {
+        path: "/register",
+        element: (
+          <div className="flex justify-center items-center py-20 mt-20">
+            <RegisterForm />
+          </div>
+        ),
       },
     ],
   },
-
-  // Try adding a new route! For example, "/about" with an About component
+  // routes si connecté
+  {
+    path: "/dashboard",
+    element: <ProtectedRoute />,
+    children: [
+      {
+        element: <DashboardLayout />,
+        children: [
+          {
+            index: true,
+            element: <ProjectList />,
+          },
+          {
+            path: "projects/:id/tasks",
+            element: <ProjectDetails />,
+          },
+        ],
+      },
+    ],
+  },
 ]);
 
 /* ************************************************************************* */
