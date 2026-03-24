@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import TaskModal from "./modals/CreateTask";
+import AddNewMember from "./modals/addNewMember";
 
 export interface Task {
   id: string;
@@ -41,7 +42,7 @@ const ProjectDetails = () => {
       }
     };
     fetchTasks();
-  }, [tasks, id]);
+  }, []);
 
   // console.log(tasks)
 
@@ -54,7 +55,7 @@ const ProjectDetails = () => {
   return (
     <div className="p-8">
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold text-[#5c2e26] mb-6 font-mono">
+        <h2 className="text-3xl font-bold text-[#5c2e26] mb-6 font-mono">
           Tableau de bord du projet
         </h2>
         <button
@@ -69,6 +70,7 @@ const ProjectDetails = () => {
           + Nouvelle Tâche
         </button>
       </div>
+      <AddNewMember />
       <div role="tablist" className="tabs border-b-2 tabs-lifted tabs-lg mb-8">
         <button
           type="button"

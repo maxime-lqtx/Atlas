@@ -16,7 +16,7 @@ const router = express.Router();
 // user root
 router.get("/users", userActions.browse);
 router.get("/user/:id", userActions.read);
-router.put("/user/:id", userActions.userToEdit);
+router.patch("/user/:id", userActions.userToEdit);
 router.delete("/user/:id", userActions.userToDelete);
 
 // register root
