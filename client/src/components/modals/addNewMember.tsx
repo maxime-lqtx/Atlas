@@ -6,7 +6,6 @@ export default function NewMemberModal() {
   // project_id, user_id de la personne qu'on ajoute
   const projectId = useParams();
   const [users, setUsers] = useState([]);
-  const [error, setError] = useState<string | unknown>();
 
   console.log(projectId);
   console.log(users);
@@ -18,7 +17,7 @@ export default function NewMemberModal() {
         const data = await response.json();
         setUsers(data);
       } catch (error) {
-        setError(error);
+        console.error(error);
       }
     };
     fetchData();
