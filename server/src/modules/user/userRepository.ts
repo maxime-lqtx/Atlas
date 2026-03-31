@@ -33,7 +33,7 @@ class UserRepository {
     );
 
     // Return the first row of the result, which represents the user
-    return rows[0] as IUser;
+    return (rows[0] as IUser) || null;
   }
 
   async readAll() {

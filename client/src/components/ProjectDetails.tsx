@@ -115,7 +115,7 @@ const ProjectDetails = () => {
             filteredTasks.map((task) => (
               <div
                 key={task.id}
-                className="card bg-white border border-[#ebd9c1] shadow-sm hover:shadow-md transition-shadow"
+                className="card bg-white border rounded-2xl border-[#ebd9c1] shadow-sm hover:shadow-md transition-shadow"
               >
                 <div className="card-body p-5">
                   <div className="flex justify-between items-start mb-2">

@@ -9,14 +9,8 @@ const browse: RequestHandler = async (req, res, next) => {
   try {
     // Fetch all users
     const users = await userRepository.readAll();
-
-    if (users.length === 0) {
-      res.status(204).json({ message: "No users found" });
-      return;
-    }
-
     // Respond with the users in JSON format
-    res.json(users);
+    res.status(200).json(users);
     return;
   } catch (err) {
     // Pass any errors to the error-handling middleware
@@ -30,16 +24,18 @@ const read: RequestHandler = async (req, res, next) => {
   try {
     // Fetch a specific user based on the provided ID
     const userId = Number(req.params.id);
-    console.log(userId);
+    // console.log(userId);
 
     const user = await userRepository.read(userId);
 
+    // console.log(user.id);
     // If the user is not found, respond with HTTP 404 (Not Found)
     // Otherwise, respond with the user in JSON format
     if (user == null) {
       res.status(404).json({ message: "Utilisateur non trouvé" });
       return;
     }
+
     res.json(user);
   } catch (err) {
     // Pass any errors to the error-handling middleware
@@ -55,7 +51,7 @@ const readMe: RequestHandler = async (
   try {
     res.status(200).json(req.user);
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     res.status(500).json({ message: "Server Error !" });
   }
 };
@@ -77,7 +73,7 @@ const add: RequestHandler = async (req, res, next) => {
     }
 
     const hashedPassword = await argon2.hash(user.password);
-    console.log(hashedPassword);
+    // console.log(hashedPassword);
 
     const newUser = {
       lastname: user.lastname,
@@ -96,6 +92,7 @@ const add: RequestHandler = async (req, res, next) => {
     }
     // Respond with HTTP 201 (Created) and the ID of the newly inserted user
     res.status(201).json({ insertId });
+    return;
   } catch (err) {
     // Pass any errors to the error-handling middleware
     res.status(500).json({ message: "Server Error !" });
@@ -107,10 +104,15 @@ const userToEdit: RequestHandler = async (req, res, next) => {
     const id = Number(req.params.id);
     const userData = req.body;
 
+    if (!userData.lastname) {
+      res.sendStatus(400);
+      return;
+    }
+
     const userIsExist = await userRepository.read(id);
 
     if (!userIsExist) {
-      res.send(400).json({ message: "Error: user doesn't exist" });
+      res.status(404).json({ message: "Error: user doesn't exist" });
       return;
     }
 
@@ -120,10 +122,14 @@ const userToEdit: RequestHandler = async (req, res, next) => {
       res.status(404).json({ message: "User not found !" });
       return;
     }
-    res.status(200).json({ message: "User has been updated !" });
+
+    res.sendStatus(204);
+    return;
   } catch (error) {
     // console.error(error);
-    res.status(500).json({ message: "Server error !" });
+    if (!res.headersSent) {
+      res.status(500).json({ message: "Server error !" });
+    }
   }
 };
 
@@ -142,11 +148,9 @@ const userToDelete: RequestHandler = async (req, res, next) => {
     }
 
     res.status(204).json({ message: "User has been deleted !" });
-    return;
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     res.status(500).json({ message: "Server Error !" });
-    return;
   }
 };
 
