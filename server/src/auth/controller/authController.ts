@@ -13,10 +13,10 @@ const login: RequestHandler = async (req, res): Promise<void> => {
 
     // get email and password
     const { email, password } = req.body;
-    console.log(req.body);
+    // console.log(req.body);
 
     const emailIsExist = await userRepository.readByEmail(email);
-    console.log(emailIsExist);
+    // console.log(emailIsExist);
     //  if email doesn't exist
     if (!emailIsExist) {
       res.status(401).json({ message: "Invalid credentials" });
@@ -52,7 +52,7 @@ const login: RequestHandler = async (req, res): Promise<void> => {
       },
     );
 
-    console.log(token);
+    // console.log(token);
 
     // send token in cookies
     res.cookie("access_token", token, {
@@ -68,7 +68,7 @@ const login: RequestHandler = async (req, res): Promise<void> => {
       },
     });
   } catch (error) {
-    console.error("Erreur on login:", error);
+    // console.error("Erreur on login:", error);
     res.status(500).json({ message: "Error server !" });
   }
 };
