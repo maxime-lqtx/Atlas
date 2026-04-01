@@ -20,7 +20,7 @@ const browse: RequestHandler = async (req, res, next) => {
 };
 
 // The R of BREAD - Read operation
-const read: RequestHandler = async (req, res, next) => {
+const getOneById: RequestHandler = async (req, res, next) => {
   try {
     // Fetch a specific user based on the provided ID
     const userId = Number(req.params.id);
@@ -36,7 +36,7 @@ const read: RequestHandler = async (req, res, next) => {
       return;
     }
 
-    res.json(user);
+    res.status(200).json(user);
   } catch (err) {
     // Pass any errors to the error-handling middleware
     next(err);
@@ -123,7 +123,7 @@ const userToEdit: RequestHandler = async (req, res, next) => {
       return;
     }
 
-    res.sendStatus(204);
+    res.sendStatus(204).json({ message: "User updated" });
     return;
   } catch (error) {
     // console.error(error);
@@ -154,4 +154,4 @@ const userToDelete: RequestHandler = async (req, res, next) => {
   }
 };
 
-export default { browse, read, readMe, add, userToEdit, userToDelete };
+export default { browse, getOneById, readMe, add, userToEdit, userToDelete };

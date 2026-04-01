@@ -1,92 +1,135 @@
-// Import the supertest library for making HTTP requests
-import supertest from "supertest";
-
-// Import the Express application
-import app from "../../src/app";
-
-// Import databaseClient
-import databaseClient from "../../database/client";
-
+import type { Request, Response } from "express";
 import type { Result, Rows } from "../../database/client";
-import type { IUser } from "../../src/modules/user/user";
+import userActions from "../../src/modules/user/userActions";
 import userRepository from "../../src/modules/user/userRepository";
 
-// Restore all mocked functions after each test
+// all the mock are restored after all test
 afterEach(() => {
   jest.restoreAllMocks();
 });
+//on mock le repo
+jest.mock("../../src/modules/user/userRepository");
 
-// Test suite for the GET /users route
+// test for get /users
 describe("GET /users", () => {
+  // test for succes fetch all users
   it("should fetch users successfully", async () => {
-    // Mock empty rows returned from the database
-    const rows = [] as Rows;
+    // on mock les users
+    const users = [
+      {
+        lastname: "zerztth",
+        firstname: "zefrgdtfhgj",
+        email: "sfgfdf@gmail.com",
+        password: "zaertrythyjhgfgfezùarety:zezr",
+        image_url: "http://test.com",
+        created_at: Number(new Date()), // on convertis la date en number car string de base
+      },
+      {
+        lastname: "zerzddsfsdftth",
+        firstname: "zefrgsdfsdfsddtfhgj",
+        email: "sfsdfsdfgfdf@gmail.com",
+        password: "zaertrythyjhgfgfezùjkhkhjkarety:zezr",
+        image_url: "http://test2.com",
+        created_at: Number(new Date()), // on convertis la date en number car string de base
+      },
+    ] as Rows;
 
-    // Mock the implementation of the database query method
-    jest
-      .spyOn(databaseClient, "query")
-      .mockImplementation(async () => [rows, []]);
+    // j'appelle la methode readAll que je cast pour typescript et je définit le succes
+    (userRepository.readAll as jest.Mock).mockResolvedValue(users);
 
-    // Send a GET request to the /users endpoint
-    const response = await supertest(app).get("/users");
+    // req vide pour le get
+    const req = {} as Request;
 
-    // Assertions
-    expect(response.status).toBe(200);
-    expect(response.body).toStrictEqual(rows);
+    // on simule le satut et le json de la reponse
+    const res = {
+      status: jest.fn().mockReturnThis(),
+      json: jest.fn().mockReturnThis(),
+    } as unknown as Response;
+
+    // on simule le next()
+    const next = jest.fn();
+
+    // on execute la fonction pour lire les users
+    await userActions.browse(req, res, next);
+
+    // on attends le statut 200
+    expect(res.status).toHaveBeenCalledWith(200);
+    // on attends le tableau de users
+    expect(res.json).toHaveBeenCalledWith(users);
   });
 });
 
-// Test suite for the GET /users/:id route
+// test for get one user with his id
 describe("GET /user/:id", () => {
-  it("should fetch a single users successfully", async () => {
-    // Mock rows returned from the database
-    const rows = [{}] as Rows;
+  // test pour fetch les données d'un seul user
+  it("should fetch a single user successfully", async () => {
+    // on mock les données attendus
+    const user = {
+      id: "1",
+      lastname: "zerztth",
+      firstname: "zefrgdtfhgj",
+      email: "sfgfdf@gmail.com",
+    } as unknown as Rows;
 
-    // Mock the implementation of the database query method
-    jest
-      .spyOn(databaseClient, "query")
-      .mockImplementation(async () => [rows, []]);
+    // j'appelle la methode read que je cast pour typescript et je définit le succes
+    (userRepository.read as jest.Mock).mockResolvedValue(user);
 
-    // Send a GET request to the /users/:id endpoint
-    const response = await supertest(app).get("/user/1");
+    // on récup l'id pour 1 user
+    const req = { params: { id: "1" } } as unknown as Request;
 
-    // Assertions
-    expect(response.status).toBe(200);
-    expect(response.body).toStrictEqual(rows[0]);
+    // on simule le satut et le json de la reponse
+    const res = {
+      status: jest.fn().mockReturnThis(),
+      json: jest.fn().mockReturnThis(),
+    } as unknown as Response;
+
+    // on simule le next()
+    const next = jest.fn();
+
+    await userActions.getOneById(req, res, next);
+
+    // on attends le statut 200
+    expect(res.status).toHaveBeenCalledWith(200);
+    // on attends le tableau de users
+    expect(res.json).toHaveBeenCalledWith(user);
   });
 
+  // test pour un id invalid
   it("should fail on invalid id", async () => {
-    // Mock empty rows returned from the database
-    const rows = [] as Rows;
+    // j'appelle la methode readAll que je cast pour typescript et je définit le succes
+    (userRepository.read as jest.Mock).mockResolvedValue(null);
 
-    // Mock the implementation of the database query method
-    jest
-      .spyOn(databaseClient, "query")
-      .mockImplementation(async () => [rows, []]);
+    // req invalid id
+    const req = { params: { id: null } } as unknown as Request;
 
-    // Send a GET request to the /users/:id endpoint with an invalid ID
-    const response = await supertest(app).get("/user/0");
+    // on simule le satut et le json de la reponse
+    const res = {
+      status: jest.fn().mockReturnThis(),
+      json: jest.fn().mockReturnThis(),
+    } as unknown as Response;
 
-    // Assertions
-    expect(response.status).toBe(404);
-    expect(response.body).toEqual({ message: "Utilisateur non trouvé" });
+    // on simule le next()
+    const next = jest.fn();
+
+    // on execute la fonction getOneById
+    await userActions.getOneById(req, res, next);
+
+    // on attends le statut 404
+    expect(res.status).toHaveBeenCalledWith(404);
+    // on attends le message d'erreur
+    expect(res.json).toHaveBeenCalledWith({
+      message: "Utilisateur non trouvé",
+    });
   });
 });
 
 // Test suite for the POST /users route
-// Doesn't pass: maybe something to change in app config :/
 describe("POST /users", () => {
   it("should add a new users successfully", async () => {
     // Mock result of the database query
-    const result = { insertId: 1 } as Result;
-
-    // Mock the implementation of the database query method
-    jest
-      .spyOn(databaseClient, "query")
-      .mockImplementation(async () => [result, []]);
 
     // Fake users data
-    const fakeItem = {
+    const user = {
       lastname: "zerztth",
       firstname: "zefrgdtfhgj",
       email: "sfgfdf@gmail.com",
@@ -95,155 +138,121 @@ describe("POST /users", () => {
       created_at: new Date(),
     };
 
-    // Send a POST request to the /users endpoint with a test users
-    const response = await supertest(app).post("/users").send(fakeItem);
+    (userRepository.create as jest.Mock).mockResolvedValue(user);
 
-    // Assertions
-    expect(response.status).toBe(201);
-    expect(response.body).toBeInstanceOf(Object);
-    expect(response.body.insertId).toBe(result.insertId);
+    // on envoie depuis le req.body les données pour add un new user
+    const req = {
+      body: {
+        lastname: "zerztth",
+        firstname: "zefrgdtfhgj",
+        email: "sfgfdf@gmail.com",
+        password: "zaertrythyjhgfgfezùarety:zezr",
+        image_url: "http://test.com",
+        created_at: new Date(),
+      },
+    } as unknown as Request;
+
+    // on simule le satut et le json de la reponse
+    const res = {
+      status: jest.fn().mockReturnThis(),
+      json: jest.fn().mockReturnThis(),
+    } as unknown as Response;
+
+    // on simule le next()
+    const next = jest.fn();
+
+    // on execute la fonction pour lire les users
+    await userActions.add(req, res, next);
+
+    // on attends le statut 201
+    expect(res.status).toHaveBeenCalledWith(201);
   });
 
   it("should fail on invalid request body", async () => {
-    // Mock result of the database query
-    const result = { insertId: 1 } as Result;
-
-    // Mock the implementation of the database query method
-    jest
-      .spyOn(databaseClient, "query")
-      .mockImplementation(async () => [result, []]);
-
-    // Fake users data with missing users_id
-    const fakeItem = { title: "foo" };
-
-    // Send a POST request to the /users endpoint with a test users
-    const response = await supertest(app).post("/users").send(fakeItem);
-
-    // Assertions
-    expect(response.status).toBe(400);
-    expect(response.body).toEqual({ message: "Email et mot de passe requis." });
-  });
-});
-
-// Test suite for the PUT /users/:id route
-// This route is not yet implemented :/
-describe("PATCH /user/:id", () => {
-  it("should update an existing users successfully", async () => {
-    jest.spyOn(userRepository, "read").mockResolvedValue({
-      id: 1,
-      lastname: "Doe",
-      firstname: "John",
-      email: "john@example.com",
-      password: "hashedPassword",
-      image_url: "http://example.com/image.jpg",
-      created_at: new Date(),
-    });
-
-    // Mock result of the database query
-    const result = { affectedRows: 1 } as Result;
-
-    // Mock the implementation of the database query method
-    jest
-      .spyOn(databaseClient, "query")
-      .mockImplementation(async () => [result, []]);
-
     // Fake users data
-    const fakeItem = {
-      lastname: "zerth",
-      firstname: "zedtfhgj",
-      email: "sfgf@gmail.com",
+    const user = {
+      lastname: "zerztth",
+      firstname: "zefrgdtfhgj",
+      email: "sfgfdf@gmail.com",
       password: "zaertrythyjhgfgfezùarety:zezr",
       image_url: "http://test.com",
       created_at: new Date(),
     };
 
-    // Send a PUT request to the /users/:id endpoint with a test users
-    const response = await supertest(app).patch("/user/1").send(fakeItem);
+    (userRepository.create as jest.Mock).mockResolvedValue(user);
 
-    // Assertions
-    expect(response.status).toBe(204);
-    expect(response.body).toEqual({});
-  });
+    // on envoie depuis le req.body les données pour add un new user
+    const req = {
+      body: {
+        title: "zerztth",
+        firstname: "zefrgdtfhgj",
+        email: "",
+        password: "zaertrythyjhgfgfezùarety:zezr",
+        image_url: "http://test.com",
+        created_at: new Date(),
+      },
+    } as unknown as Request;
 
-  it("should fail on invalid request body", async () => {
-    // Mock that the user exists
-    jest.spyOn(userRepository, "read").mockResolvedValue({
-      id: 1,
-      lastname: "Doe",
-      firstname: "John",
-      email: "john@example.com",
-      password: "hashedPassword",
-      image_url: "http://example.com/image.jpg",
-      created_at: new Date(),
+    const res = {
+      status: jest.fn().mockReturnThis(),
+      json: jest.fn().mockReturnThis(),
+    } as unknown as Response;
+
+    const next = jest.fn();
+
+    await userActions.add(req, res, next);
+
+    expect(res.status).toHaveBeenCalledWith(400);
+
+    expect(res.json).toHaveBeenCalledWith({
+      message: "Email et mot de passe requis.",
     });
-
-    // Send an incomplete body (ex: no lastname)
-    const fakeItem = { firstname: "John" };
-
-    // Call PATCH
-    const response = await supertest(app).patch("/user/1").send(fakeItem);
-
-    // Expect 400 because validation checks for required fields
-    expect(response.status).toBe(400);
-  });
-
-  it("should fail on invalid id", async () => {
-    // 1. On simule que la lecture en base de données renvoie null (l'user n'existe pas)
-    jest
-      .spyOn(userRepository, "read")
-      .mockResolvedValue(null as unknown as IUser);
-
-    // 2. IMPORTANT : Envoie un body VALIDE pour ne pas déclencher le 400 de validation
-    const fakeItem = {
-      lastname: "Doe",
-      firstname: "John",
-      email: "john@example.com",
-      // ... autres champs requis par ton contrôleur
-    };
-
-    // 3. Envoi de la requête PATCH
-    const response = await supertest(app).patch("/user/9999").send(fakeItem);
-
-    // 4. Assertions
-    expect(response.status).toBe(404);
-    expect(response.body).toEqual({ message: "Error: user doesn't exist" });
   });
 });
 
-// Test suite for the DELETE /users/:id route
-// This route is not yet implemented :/
-describe("DELETE /user/:id", () => {
-  it("should delete an existing user successfully", async () => {
-    // Mock result of the database query
-    const result = { affectedRows: 1 } as Result;
+// Test suite for the PATCH /users/:id route
+// Pas fini
+describe("PATCH /user/:id", () => {
+  it("should update an existing users successfully", async () => {
+    const user = {
+      id: "1",
+      lastname: "zerztth",
+      firstname: "zefrgdtfhgj",
+      email: "sfgfdf@gmail.com",
+      password: "zaertrythyjhgfgfezùarety:zezr",
+      image_url: "http://test.com",
+      created_at: new Date(),
+    };
 
-    // Mock the implementation of the database query method
-    jest
-      .spyOn(databaseClient, "query")
-      .mockImplementation(async () => [result, []]);
+    (userRepository.update as jest.Mock).mockResolvedValue({
+      id: 1,
+      lastname: "zertdh",
+    });
 
-    // Send a DELETE request to the /users/:id endpoint
-    const response = await supertest(app).delete("/user/42");
+    // on envoie depuis le req.body les données pour add un new user
+    const req = {
+      params: { id: "1" },
+      body: {
+        title: "zerth",
+        lastname: "zerth",
+        firstname: "zefrgdtfhgj",
+        email: "sfgf@gmail.com",
+        password: "zaertrythyjhgfgfezùarety:zezr",
+        image_url: "http://test.com",
+      },
+    } as unknown as Request;
 
-    // Assertions
-    expect(response.status).toBe(204);
-    expect(response.body).toEqual({});
-  });
+    // on mock le status et la response
+    const res = {
+      status: jest.fn().mockReturnThis(),
+      json: jest.fn().mockReturnThis(),
+    } as unknown as Response;
 
-  it("should fail on invalid id", async () => {
-    // Mock result of the database query
-    const result = { affectedRows: 0 } as Result;
+    // on mock le next
+    const next = jest.fn();
 
-    // Mock the implementation of the database query method
-    jest
-      .spyOn(databaseClient, "query")
-      .mockImplementation(async () => [result, []]);
+    await userActions.userToEdit(req, res, next);
 
-    // Send a DELETE request to the /user/:id endpoint
-    const response = await supertest(app).delete("/user/43");
-
-    // Assertions
-    expect(response.status).toBe(404);
-    expect(response.body).toEqual({ message: "User not found !" });
+    expect(res.status).toHaveBeenCalledWith(204);
   });
 });

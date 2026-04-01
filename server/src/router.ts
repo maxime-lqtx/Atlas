@@ -15,7 +15,7 @@ const router = express.Router();
 
 // user root
 router.get("/users", userActions.browse);
-router.get("/user/:id", userActions.read);
+router.get("/user/:id", userActions.getOneById);
 router.patch("/user/:id", userActions.userToEdit);
 router.delete("/user/:id", userActions.userToDelete);
 
