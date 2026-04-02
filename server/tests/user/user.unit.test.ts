@@ -1,8 +1,8 @@
+import { afterEach } from "node:test";
 import type { Request, Response } from "express";
 import type { Result, Rows } from "../../database/client";
 import userActions from "../../src/modules/user/userActions";
 import userRepository from "../../src/modules/user/userRepository";
-import { afterEach } from "node:test";
 import "@testing-library/jest-dom";
 
 // all the mock are restored after all test
