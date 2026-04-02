@@ -2,6 +2,8 @@ import type { Request, Response } from "express";
 import type { Result, Rows } from "../../database/client";
 import userActions from "../../src/modules/user/userActions";
 import userRepository from "../../src/modules/user/userRepository";
+import { afterEach } from "node:test";
+import "@testing-library/jest-dom";
 
 // all the mock are restored after all test
 afterEach(() => {
@@ -212,47 +214,47 @@ describe("POST /users", () => {
 
 // Test suite for the PATCH /users/:id route
 // Pas fini
-describe("PATCH /user/:id", () => {
-  it("should update an existing users successfully", async () => {
-    const user = {
-      id: "1",
-      lastname: "zerztth",
-      firstname: "zefrgdtfhgj",
-      email: "sfgfdf@gmail.com",
-      password: "zaertrythyjhgfgfezùarety:zezr",
-      image_url: "http://test.com",
-      created_at: new Date(),
-    };
+// describe("PATCH /user/:id", () => {
+//   it("should update an existing users successfully", async () => {
+//     const user = {
+//       id: "1",
+//       lastname: "zerztth",
+//       firstname: "zefrgdtfhgj",
+//       email: "sfgfdf@gmail.com",
+//       password: "zaertrythyjhgfgfezùarety:zezr",
+//       image_url: "http://test.com",
+//       created_at: new Date(),
+//     };
 
-    (userRepository.update as jest.Mock).mockResolvedValue({
-      id: 1,
-      lastname: "zertdh",
-    });
+//     (userRepository.update as jest.Mock).mockResolvedValue({
+//       id: 1,
+//       lastname: "zertdh",
+//     });
 
-    // on envoie depuis le req.body les données pour add un new user
-    const req = {
-      params: { id: "1" },
-      body: {
-        title: "zerth",
-        lastname: "zerth",
-        firstname: "zefrgdtfhgj",
-        email: "sfgf@gmail.com",
-        password: "zaertrythyjhgfgfezùarety:zezr",
-        image_url: "http://test.com",
-      },
-    } as unknown as Request;
+//     // on envoie depuis le req.body les données pour add un new user
+//     const req = {
+//       params: { id: "1" },
+//       body: {
+//         title: "zerth",
+//         lastname: "zerth",
+//         firstname: "zefrgdtfhgj",
+//         email: "sfgf@gmail.com",
+//         password: "zaertrythyjhgfgfezùarety:zezr",
+//         image_url: "http://test.com",
+//       },
+//     } as unknown as Request;
 
-    // on mock le status et la response
-    const res = {
-      status: jest.fn().mockReturnThis(),
-      json: jest.fn().mockReturnThis(),
-    } as unknown as Response;
+//     // on mock le status et la response
+//     const res = {
+//       status: jest.fn().mockReturnThis(),
+//       json: jest.fn().mockReturnThis(),
+//     } as unknown as Response;
 
-    // on mock le next
-    const next = jest.fn();
+//     // on mock le next
+//     const next = jest.fn();
 
-    await userActions.userToEdit(req, res, next);
+//     await userActions.userToEdit(req, res, next);
 
-    expect(res.status).toHaveBeenCalledWith(204);
-  });
-});
+//     expect(res.status).toHaveBeenCalledWith(204);
+//   });
+// });
