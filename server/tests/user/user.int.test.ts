@@ -1,7 +1,8 @@
 import supertest from "supertest";
-import databaseClient, { type Rows } from "../../database/client";
+import databaseClient, { Result, type Rows } from "../../database/client";
 // import app, databaseclient, supertest
 import app from "../../src/app";
+import type { ResultSetHeader } from "mysql2";
 
 // afterEach test restore all mock
 afterEach(() => {
@@ -42,36 +43,100 @@ describe("GET /users", () => {
     });
 });
 
-
-describe('GET /user/:id', () => {
-    it('should be fetch one user', async () => {
+// test for one user
+describe("GET /user/:id", () => {
+    // case successfully
+    it("should be fetch one user", async () => {
         const fakeUser = {
             id: 2,
             firstname: "John",
             lastname: "Doe",
             email: "john@gmail.com",
             password: "rertyzzgfhsdq",
-            image_url: "http://www.imagetest.com"
-        } as unknown as Rows
+            image_url: "http://www.imagetest.com",
+        } as unknown as Rows;
 
+        // intercept the req and add fakeUser in response
         jest
-        .spyOn(databaseClient, 'query')
-        .mockImplementation(async ()=>[[fakeUser], []]);
+            .spyOn(databaseClient, "query")
+            .mockImplementation(async () => [[fakeUser], []]);
 
-        const response= await supertest(app).get("/user/2");
+        // execute call API
+        const response = await supertest(app).get("/user/2");
 
         expect(response.status).toBe(200);
         expect(response.body).toStrictEqual(fakeUser);
-        
     });
 
-    it('should be return 404 if user does not exist', async ()=>{
+    // case user doesn't exist
+    it("should be return 404 if user does not exist", async () => {
         jest
-        .spyOn(databaseClient, "query")
-        .mockImplementation(async ()=>[[], []]);
+            .spyOn(databaseClient, "query")
+            .mockImplementation(async () => [[], []]);
 
-        const response= await supertest(app).get("/user/22345");
+        const response = await supertest(app).get("/user/22345");
 
         expect(response.status).toBe(404);
-    } )
+    });
+});
+
+// test for add a new user
+describe("POST /users", () => {
+    // case successfully
+    it('should create a new user successfully', async () => {
+
+        const newUser = {
+            firstname: "Thomas",
+            lastname: "Shelby",
+            email: "Thomas@gmail.com",
+            password: "sdqsdhmhufgwv",
+            image_url: "http://www.imagetest54.com"
+        } as unknown as Rows
+
+        // mock the insertId result
+        const result = { insertId: 1 } as ResultSetHeader;
+
+        jest
+            .spyOn(databaseClient, "query")
+            .mockImplementation(async () => [result, []]);
+
+        // execute the call API get
+        const response = await supertest(app).post('/users').send(newUser);
+
+        expect(response.status).toBe(201);
+        expect(response.body).toEqual({ insertId: 1 });
+    })
+
+    // case fields is missing
+    it('should failed if required field is missing', async () => {
+        const newUser = {
+            lastname: "Duncan",
+            password: "sdqsdfdgdfhmnvbnhufdfgdfgwv",
+            image_url: "http://www.imagetest5fdg4.com"
+        } as unknown as Rows
+
+        const response = await supertest(app).post('/users').send(newUser);
+
+        expect(response.status).toBe(400);
+    })
+
+    // case : if email already exist
+    it("should failed if email already exist", async () => {
+        const newUser = {
+            firstname: "Thomas",
+            lastname: "Shelby",
+            email: "Thomas@gmail.com",
+            password: "sdqsdhmhufgwv",
+            image_url: "http://www.imagetest54.com"
+        } as unknown as Rows
+
+        jest
+            .spyOn(databaseClient, "query")
+            .mockRejectedValue('Error: user already exist');
+
+        const response = await supertest(app).post('/users').send(newUser);
+
+        // return code 409 for conflict to duplicate a user
+        expect(response.status).toBe(409);
+    })
 })
