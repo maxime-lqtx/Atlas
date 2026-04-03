@@ -1,7 +1,5 @@
-import type { ResultSetHeader } from "mysql2";
 import supertest from "supertest";
-import databaseClient, { Result, type Rows } from "../../database/client";
-// import app, databaseclient, supertest
+import databaseClient, { type Result, type Rows } from "../../database/client";
 import app from "../../src/app";
 
 // afterEach test restore all mock
@@ -93,7 +91,7 @@ describe("POST /users", () => {
     } as unknown as Rows;
 
     // mock the insertId result
-    const result = { insertId: 1 } as ResultSetHeader;
+    const result = { insertId: 1 } as Result;
 
     jest
       .spyOn(databaseClient, "query")
@@ -147,16 +145,12 @@ describe("POST /users", () => {
 });
 
 // test on delete user
-describe('DELETE /user/:id', () => {
-
-  it('should delete user successfully', async () => {
-
+describe("DELETE /user/:id", () => {
+  it("should delete user successfully", async () => {
     // mock the success affected row
-    const mockResult = { affectedRows: 1 } as ResultSetHeader;
+    const mockResult = { affectedRows: 1 } as Result;
 
-    jest
-      .spyOn(databaseClient, "query")
-      .mockResolvedValue([[mockResult], []]);
+    jest.spyOn(databaseClient, "query").mockResolvedValue([[mockResult], []]);
 
     const response = await supertest(app).delete("/user/2");
 
@@ -164,20 +158,17 @@ describe('DELETE /user/:id', () => {
     expect(response.status).toBe(204);
   });
 
-// case : if user doesn't exist in db
-  it('should failed if user does not exist', async () => {
-
+  // case : if user doesn't exist in db
+  it("should failed if user does not exist", async () => {
     // mock the affected row at 0 cause failed
-    const mockResult = { affectedRows: 0 } as ResultSetHeader
+    const mockResult = { affectedRows: 0 } as Result;
 
-    jest
-      .spyOn(databaseClient, 'query')
-      .mockResolvedValue([mockResult, []]);
+    jest.spyOn(databaseClient, "query").mockResolvedValue([mockResult, []]);
 
     const response = await supertest(app).delete("/user/54654");
 
     // return the status not found + the message
     expect(response.status).toBe(404);
-    expect(response.body).toStrictEqual({"message": "User not found !"});
-  })
-})
+    expect(response.body).toStrictEqual({ message: "User not found !" });
+  });
+});
