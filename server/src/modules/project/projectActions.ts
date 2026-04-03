@@ -14,10 +14,7 @@ const read: RequestHandler = async (req: AuthRequest, res: Response, next) => {
 
     const projects = await projectRepository.getProjectsByUser(ownerId);
 
-    if (projects == null) {
-      res.status(404).json({ message: "Project not found !" });
-      return;
-    }
+    
     res.json(projects);
   } catch (error) {
     next(error);
