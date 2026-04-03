@@ -207,7 +207,7 @@ describe("POST /users", () => {
     expect(res.status).toHaveBeenCalledWith(400);
 
     expect(res.json).toHaveBeenCalledWith({
-      message: "Email et mot de passe requis.",
+      message: "Credentials are missing !",
     });
   });
 });

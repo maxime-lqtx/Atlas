@@ -1,7 +1,6 @@
 import * as argon2 from "argon2";
 import type { RequestHandler, Response } from "express";
 import type { AuthRequest } from "../../middleware/verifyToken";
-import type { IUser } from "./user";
 import userRepository from "./userRepository";
 
 // The B of BREAD - Browse (Read All) operation
@@ -68,9 +67,18 @@ const add: RequestHandler = async (req, res, next) => {
     const user = req.body;
 
     if (!user.email || !user.password) {
-      res.status(400).json({ message: "Email et mot de passe requis." });
+      res.status(400).json({ message: "Credentials are missing !" });
       return;
     }
+
+    // verify if the user already exist 
+    const existingUser = await userRepository.readByEmail(user.email);
+
+    if (existingUser) {
+      res.status(409).json({ message: "This user already exist !" });
+      return;
+    }
+
 
     const hashedPassword = await argon2.hash(user.password);
     // console.log(hashedPassword);
@@ -89,13 +97,14 @@ const add: RequestHandler = async (req, res, next) => {
 
     if (!insertId) {
       res.status(403).json({ message: "This user cannot be create !" });
+      return;
     }
     // Respond with HTTP 201 (Created) and the ID of the newly inserted user
     res.status(201).json({ insertId });
     return;
   } catch (err) {
-    // Pass any errors to the error-handling middleware
     res.status(500).json({ message: "Server Error !" });
+    return;
   }
 };
 
