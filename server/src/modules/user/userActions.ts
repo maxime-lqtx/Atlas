@@ -71,14 +71,13 @@ const add: RequestHandler = async (req, res, next) => {
       return;
     }
 
-    // verify if the user already exist 
+    // verify if the user already exist
     const existingUser = await userRepository.readByEmail(user.email);
 
     if (existingUser) {
       res.status(409).json({ message: "This user already exist !" });
       return;
     }
-
 
     const hashedPassword = await argon2.hash(user.password);
     // console.log(hashedPassword);
@@ -146,6 +145,7 @@ const userToDelete: RequestHandler = async (req, res, next) => {
   try {
     if (!req.params.id) {
       res.status(400).json({ message: "Error bad request !" });
+      return;
     }
     const id = Number(req.params.id);
 

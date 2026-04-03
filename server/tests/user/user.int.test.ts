@@ -134,14 +134,50 @@ describe("POST /users", () => {
       email: "Thomas@gmail.com",
     } as unknown as Rows;
 
-    jest
-      .spyOn(databaseClient, "query")
-      .mockResolvedValue([[UserExisting], []]);
+    jest.spyOn(databaseClient, "query").mockResolvedValue([[UserExisting], []]);
 
     const response = await supertest(app).post("/users").send(newUser);
 
     // return code 409 for conflict to duplicate a user
     expect(response.status).toBe(409);
-    expect(response.body).toStrictEqual({"message": "This user already exist !"})
+    expect(response.body).toStrictEqual({
+      message: "This user already exist !",
+    });
   });
 });
+
+// test on delete user
+describe('DELETE /user/:id', () => {
+
+  it('should delete user successfully', async () => {
+
+    // mock the success affected row
+    const mockResult = { affectedRows: 1 } as ResultSetHeader;
+
+    jest
+      .spyOn(databaseClient, "query")
+      .mockResolvedValue([[mockResult], []]);
+
+    const response = await supertest(app).delete("/user/2");
+
+    // doesn't return the content but just the status
+    expect(response.status).toBe(204);
+  });
+
+// case : if user doesn't exist in db
+  it('should failed if user does not exist', async () => {
+
+    // mock the affected row at 0 cause failed
+    const mockResult = { affectedRows: 0 } as ResultSetHeader
+
+    jest
+      .spyOn(databaseClient, 'query')
+      .mockResolvedValue([mockResult, []]);
+
+    const response = await supertest(app).delete("/user/54654");
+
+    // return the status not found + the message
+    expect(response.status).toBe(404);
+    expect(response.body).toStrictEqual({"message": "User not found !"});
+  })
+})
