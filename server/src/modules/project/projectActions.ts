@@ -14,7 +14,6 @@ const read: RequestHandler = async (req: AuthRequest, res: Response, next) => {
 
     const projects = await projectRepository.getProjectsByUser(ownerId);
 
-    
     res.json(projects);
   } catch (error) {
     next(error);
@@ -34,6 +33,11 @@ const add: RequestHandler = async (req: AuthRequest, res: Response, next) => {
 
     if (!req.body) {
       res.status(400).json({ message: "Error bad request !" });
+      return;
+    }
+
+    if (!req.body.title) {
+      res.status(400).json({ message: "Error: title is missing !" });
       return;
     }
 
