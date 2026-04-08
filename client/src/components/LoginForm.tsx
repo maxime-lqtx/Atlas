@@ -26,7 +26,8 @@ export default function LoginForm() {
       console.log("Succès:", result);
       navigate("/Dashboard");
     } catch (err: unknown) {
-      throw new Error("Erreur d'envoi au serveur !");
+      console.error("Détail de l'erreur:", err);
+      // throw new Error("Erreur d'envoi au serveur !");
     }
   };
 
