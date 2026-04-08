@@ -1,5 +1,5 @@
-describe('The Home Page', ()=>{
-    it('should successfully loads', ()=>{
-        cy.visit('/')
-    })
-})
+describe("The Home Page", () => {
+  it("should successfully loads", () => {
+    cy.visit("/");
+  });
+});

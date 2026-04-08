@@ -53,7 +53,7 @@ function App() {
                 </a>
               </li>
               <li>
-                <a href="/register" className="text-amber-950">
+                <a href="/register" className="register text-amber-950">
                   Register
                 </a>
               </li>
