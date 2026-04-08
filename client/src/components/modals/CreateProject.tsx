@@ -82,7 +82,7 @@ export default function CreateProject() {
             </button>
             <button
               type="submit"
-              className={`btn bg-[#5c2e26] hover:bg-[#3e2723] text-[#d2b48c] border-0 ${isSubmitting ? "loading" : ""}`}
+              className={`btn submit bg-[#5c2e26] hover:bg-[#3e2723] text-[#d2b48c] border-0 ${isSubmitting ? "loading" : ""}`}
             >
               Créer le projet
             </button>
