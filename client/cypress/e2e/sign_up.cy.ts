@@ -37,5 +37,4 @@ describe("Test for sign-up", () => {
 
     cy.contains("This user already exist !").should("be.visible");
   });
-
 });

@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from "react";
+import { type FormEvent, useState } from "react";
 import { useNavigate } from "react-router";
 
 export default function RegisterForm() {
@@ -35,7 +35,7 @@ export default function RegisterForm() {
       }
 
       navigate("/login");
-    } catch (err:unknown) {
+    } catch (err: unknown) {
       setErrorMsg(
         err instanceof Error ? err.message : "Une erreur est survenue",
       );
