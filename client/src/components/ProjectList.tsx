@@ -111,7 +111,7 @@ const ProjectList = () => {
                     <th className="text-right">
                       <Link
                         to={`/dashboard/projects/${project.id}/tasks`}
-                        className="btn btn-ghost btn-xs text-[#5d4037] hover:bg-[#d7ccc8]"
+                        className="btn open btn-ghost btn-xs text-[#5d4037] hover:bg-[#d7ccc8]"
                       >
                         Ouvrir
                       </Link>

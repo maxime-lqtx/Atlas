@@ -77,6 +77,7 @@ const TaskModal = ({ projectId, activeTab, onTaskCreated }: TaskModalProps) => {
               </span>
             </div>
             <select
+              name="priority"
               className="select select-bordered bg-white border-[#d2b48c]"
               value={newTask.priority}
               onChange={(e) =>
@@ -120,7 +121,7 @@ const TaskModal = ({ projectId, activeTab, onTaskCreated }: TaskModalProps) => {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="btn bg-[#5c2e26] text-[#d2b48c] border-0 hover:bg-[#3e2723]"
+              className="submit btn bg-[#5c2e26] text-[#d2b48c] border-0 hover:bg-[#3e2723]"
             >
               {isSubmitting ? "Création..." : "Enregistrer"}
             </button>
