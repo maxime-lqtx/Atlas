@@ -21,7 +21,6 @@ describe("Test for sign-up", () => {
     cy.get(".btn").click();
   });
 
-  // A faire
   // case: Email already exist
   it("should failed cause email already exist", () => {
     cy.visit("/");
@@ -35,19 +34,8 @@ describe("Test for sign-up", () => {
     cy.get('input[name="password"]').type("Azertyui9579.");
 
     cy.get(".btn").click();
+
+    cy.contains("This user already exist !").should("be.visible");
   });
 
-  // case: fields are empty
-  it("should failed cause input are empty", () => {
-    cy.visit("/");
-
-    cy.contains("Register").click();
-    cy.url().should("include", "/register");
-
-    cy.get(".btn").click();
-  });
-
-  // A faire
-  // case: password is not good enough
-  it("should failed cause password has not the good format", () => {});
 });

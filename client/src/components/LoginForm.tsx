@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from "react";
+import { type FormEvent, useState } from "react";
 import { useNavigate } from "react-router";
 
 export default function LoginForm() {
@@ -6,7 +6,7 @@ export default function LoginForm() {
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
+    e.preventDefault();
     setErrorMsg(null);
 
     const formData = new FormData(e.currentTarget);
@@ -33,10 +33,12 @@ export default function LoginForm() {
       navigate("/Dashboard");
     } catch (err: unknown) {
       console.error("Détail de l'erreur:", err);
-      setErrorMsg(err instanceof Error ? err.message : "Une erreur est survenue")
+      setErrorMsg(
+        err instanceof Error ? err.message : "Une erreur est survenue",
+      );
     }
   };
-  
+
   return (
     <div className="card w-full flex flex-col items-center max-w-md p-8 rounded-xl bg-amber-950 shadow-amber-950 shadow-2xl">
       <form

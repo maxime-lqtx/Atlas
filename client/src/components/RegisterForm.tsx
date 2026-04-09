@@ -1,11 +1,13 @@
-import type { FormEvent } from "react";
+import { useState, type FormEvent } from "react";
 import { useNavigate } from "react-router";
 
 export default function RegisterForm() {
   const navigate = useNavigate();
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   const handleRegister = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setErrorMsg(null);
 
     const form = e.currentTarget;
     const formData = new FormData(form);
@@ -27,15 +29,16 @@ export default function RegisterForm() {
         body: JSON.stringify(payload),
       });
 
-      if (response.ok) {
-        alert("Compte créé !");
-        navigate("/login");
-      } else {
-        const errorData = await response.json();
-        console.error("Erreur backend:", errorData.message);
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.message || "Erreur lors de l'inscription");
       }
-    } catch (error) {
-      console.error("Erreur réseau:", error);
+
+      navigate("/login");
+    } catch (err:unknown) {
+      setErrorMsg(
+        err instanceof Error ? err.message : "Une erreur est survenue",
+      );
     }
   };
   return (
@@ -44,6 +47,12 @@ export default function RegisterForm() {
         <h2 className="text-3xl font-bold text-amber-100 text-center m-10">
           Créer un compte
         </h2>
+
+        {errorMsg && (
+          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-2 rounded relative mb-4 text-center text-sm">
+            {errorMsg}
+          </div>
+        )}
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="form-control">

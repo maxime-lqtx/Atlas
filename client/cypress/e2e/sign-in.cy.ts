@@ -23,8 +23,8 @@ describe("Sign-in tests", () => {
 
     cy.get(".btn").click();
 
-    cy.contains('Invalid credentials').should('be.visible');
+    cy.contains("Invalid credentials").should("be.visible");
 
-    cy.url().should('include', '/login');
+    cy.url().should("include", "/login");
   });
 });
