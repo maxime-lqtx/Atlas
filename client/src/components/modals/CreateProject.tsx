@@ -3,9 +3,17 @@ import { useState } from "react";
 export default function CreateProject() {
   const [newProject, setNewProject] = useState({ title: "", description: "" });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleCreateProject = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError(null);
+
+    if (!newProject.title.trim()) {
+      setError("Le titre du projet est obligatoire");
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {
@@ -17,28 +25,36 @@ export default function CreateProject() {
       });
 
       if (response.ok) {
-        // on ferme la modale
-        const modal = document.getElementById(
-          "create_modal",
-        ) as HTMLDialogElement;
+        const modal = document.getElementById("create_modal") as HTMLDialogElement;
         modal?.close();
-
-        // on reboot le form
         setNewProject({ title: "", description: "" });
         window.location.reload();
+      } else {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.message || "Erreur lors de la création");
       }
-    } catch (err) {
-      console.error("Erreur création:", err);
+    } catch (err: unknown) {
+      setError(
+        err instanceof Error ? err.message : "Une erreur est survenue",
+      );
     } finally {
       setIsSubmitting(false);
     }
   };
+
   return (
     <dialog id="create_modal" className="modal">
       <div className="modal-box bg-[#fdfaf6] border border-[#d2b48c]">
         <h3 className="font-bold text-lg mb-4 text-[#5c2e26]">
           Créer un nouveau projet
         </h3>
+
+        {error && (
+          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-2 rounded mb-4 text-sm text-center">
+            {error}
+          </div>
+        )}
+
         <form onSubmit={handleCreateProject}>
           <div className="form-control w-full mb-4">
             <div className="label">
@@ -46,7 +62,6 @@ export default function CreateProject() {
             </div>
             <input
               type="text"
-              required
               className="input input-bordered w-full bg-white border-[#d2b48c] focus:border-[#5c2e26]"
               value={newProject.title}
               onChange={(e) =>
@@ -72,25 +87,25 @@ export default function CreateProject() {
             <button
               type="button"
               className="btn btn-ghost text-[#a1887f]"
-              onClick={() =>
-                (
-                  document.getElementById("create_modal") as HTMLDialogElement
-                )?.close()
-              }
+              onClick={() => {
+                setError(null);
+                (document.getElementById("create_modal") as HTMLDialogElement)?.close();
+              }}
             >
               Annuler
             </button>
             <button
               type="submit"
+              disabled={isSubmitting}
               className={`btn submit bg-[#5c2e26] hover:bg-[#3e2723] text-[#d2b48c] border-0 ${isSubmitting ? "loading" : ""}`}
             >
-              Créer le projet
+              {isSubmitting ? "Création..." : "Créer le projet"}
             </button>
           </div>
         </form>
       </div>
       <form method="dialog" className="modal-backdrop">
-        <button type="button">close</button>
+        <button type="button" onClick={() => setError(null)}>close</button>
       </form>
     </dialog>
   );
