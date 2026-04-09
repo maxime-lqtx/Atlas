@@ -22,5 +22,9 @@ describe("Sign-in tests", () => {
     cy.get('input[name="password"]').type(randomPassword);
 
     cy.get(".btn").click();
+
+    cy.contains('Invalid credentials').should('be.visible');
+
+    cy.url().should('include', '/login');
   });
 });
