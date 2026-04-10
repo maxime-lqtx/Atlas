@@ -25,7 +25,9 @@ export default function CreateProject() {
       });
 
       if (response.ok) {
-        const modal = document.getElementById("create_modal") as HTMLDialogElement;
+        const modal = document.getElementById(
+          "create_modal",
+        ) as HTMLDialogElement;
         modal?.close();
         setNewProject({ title: "", description: "" });
         window.location.reload();
@@ -34,9 +36,7 @@ export default function CreateProject() {
         throw new Error(errorData.message || "Erreur lors de la création");
       }
     } catch (err: unknown) {
-      setError(
-        err instanceof Error ? err.message : "Une erreur est survenue",
-      );
+      setError(err instanceof Error ? err.message : "Une erreur est survenue");
     } finally {
       setIsSubmitting(false);
     }
@@ -89,7 +89,9 @@ export default function CreateProject() {
               className="btn btn-ghost text-[#a1887f]"
               onClick={() => {
                 setError(null);
-                (document.getElementById("create_modal") as HTMLDialogElement)?.close();
+                (
+                  document.getElementById("create_modal") as HTMLDialogElement
+                )?.close();
               }}
             >
               Annuler
@@ -105,7 +107,9 @@ export default function CreateProject() {
         </form>
       </div>
       <form method="dialog" className="modal-backdrop">
-        <button type="button" onClick={() => setError(null)}>close</button>
+        <button type="button" onClick={() => setError(null)}>
+          close
+        </button>
       </form>
     </dialog>
   );

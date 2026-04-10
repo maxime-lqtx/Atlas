@@ -2,46 +2,44 @@ import type { RequestHandler } from "express";
 import type { AuthRequest } from "../../middleware/verifyToken";
 import memberRepository from "../member/memberRepository";
 import type { IMember } from "./member";
+import userRepository from "../user/userRepository";
 
 const add: RequestHandler = async (req: AuthRequest, res) => {
-  // j'ai besoin de quoi ?
-  // récup le projectId , le userId, et le role défini.
-  // check si le member existe déjà => retrun
-  // sinon creation d'un new member
-
   try {
-    if (!req.body) {
-      res.status(400).json({ message: "Error bad request !" });
+    const { email, role } = req.body;
+    const projectId = Number(req.params.id);
+
+    if (!email || Number.isNaN(projectId)) {
+      res.status(400).json({ message: "Bad request: missing email or invalid project ID" });
       return;
     }
 
-    const projectId = req.params.id;
+    const user = await userRepository.readByEmail(email.toString());
+
+    if (!user) {
+      res.status(404).json({ message: "User not found with this email" });
+      return;
+    }
+
     const newMember: IMember = {
-      userId: Number(req.body.userId),
-      role: req.body.role || "editor",
-      projectId: Number(projectId),
+      userId: Number(user.id),
+      projectId: projectId,
+      role: role || "editor",
       joined_at: new Date(),
     };
 
     const isMemberExist = await memberRepository.isAlreadyExist(newMember);
 
     if (isMemberExist) {
-      res.status(409).json({ message: "This member is already exist !" });
+      res.status(409).json({ message: "Member already exists in this project" });
       return;
     }
 
-    const result = await memberRepository.create(newMember);
+    await memberRepository.create(newMember);
 
-    if (!result) {
-      res.status(500).json({ message: "Cannot added this user" });
-      return;
-    }
-
-    res.status(201).json({ message: "Member added successfully !" });
-    return;
+    res.status(201).json({ message: "Member added successfully" });
   } catch (error) {
-    res.status(500).json({ message: "Server Error !", error });
-    return;
+    res.status(500).json({ message: "Server Error", error });
   }
 };
 
