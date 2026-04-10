@@ -8,9 +8,9 @@ export default function NewMemberModal() {
   const [users, setUsers] = useState([]);
   const [error, setError] = useState<string | null>(null);
 
-
   // console.log(projectId);
-  // console.log(users);
+  console.log(users);
+  console.log(error);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -25,8 +25,6 @@ export default function NewMemberModal() {
     fetchData();
   }, []);
 
-  // fonction pour la recherche des users
-
   // fonction de creation de member
   // recup les infos et fais l'envoi des data au backend
   async function addNewMember(e: React.FormEvent<HTMLFormElement>) {
@@ -36,13 +34,17 @@ export default function NewMemberModal() {
     console.log(inputValue);
 
     try {
-      const response = await fetch(`http://localhost:3310/projects/${projectId.id}/members`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({email: inputValue}),
-        credentials: "include",
-      });
-      if (response.ok) { }
+      const response = await fetch(
+        `http://localhost:3310/projects/${projectId.id}/members`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email: inputValue }),
+          credentials: "include",
+        },
+      );
+      if (response.ok) {
+      }
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : "Une erreur est survenue");
     }

@@ -1,8 +1,8 @@
 import type { RequestHandler } from "express";
 import type { AuthRequest } from "../../middleware/verifyToken";
 import memberRepository from "../member/memberRepository";
-import type { IMember } from "./member";
 import userRepository from "../user/userRepository";
+import type { IMember } from "./member";
 
 const add: RequestHandler = async (req: AuthRequest, res) => {
   try {
@@ -10,7 +10,9 @@ const add: RequestHandler = async (req: AuthRequest, res) => {
     const projectId = Number(req.params.id);
 
     if (!email || Number.isNaN(projectId)) {
-      res.status(400).json({ message: "Bad request: missing email or invalid project ID" });
+      res
+        .status(400)
+        .json({ message: "Bad request: missing email or invalid project ID" });
       return;
     }
 
@@ -31,7 +33,9 @@ const add: RequestHandler = async (req: AuthRequest, res) => {
     const isMemberExist = await memberRepository.isAlreadyExist(newMember);
 
     if (isMemberExist) {
-      res.status(409).json({ message: "Member already exists in this project" });
+      res
+        .status(409)
+        .json({ message: "Member already exists in this project" });
       return;
     }
 
