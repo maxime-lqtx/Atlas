@@ -4,7 +4,7 @@ describe("Test for sign-up", () => {
   // test for create a new user
   it("should sign-up successfully", () => {
     const randomLastName = faker.person.lastName();
-    const randomFirstName = faker.person.lastName();
+    const randomFirstName = faker.person.firstName();
     const randomEmail = faker.internet.email();
     const randomPassword = faker.internet.password();
 
