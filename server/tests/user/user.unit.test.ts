@@ -36,7 +36,7 @@ describe("GET /users", () => {
       },
     ] as Rows;
 
-    // j'appelle la methode readAll que je cast pour typescript et je définit le succes
+    // j'appelle la methode readAll que je cast pour typescript et je défini le succes
     (userRepository.readAll as jest.Mock).mockResolvedValue(users);
 
     // req vide pour le get
