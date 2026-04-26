@@ -1,45 +1,39 @@
-version: "3.4"
-
 services:
-  web:
-    build: .
+  database:
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: atlas_db
+    ports:
+      - "3306:3306"
     volumes:
-      - .:/usr/src/app
-      - /usr/src/app/node_modules
+      - atlas_data:/var/lib/mysql
+  backend:
+    build: ./server
     ports:
       - "3310:3310"
-      - "3000:3000"
+    volumes:
+      - ./server:/api
+      - /api/node_modules
     environment:
       APP_PORT: 3310
-      APP_SECRET: 123456789
       DB_HOST: database
-      DB_PORT: 3306
-      DB_USER: user
-      DB_PASSWORD: password
-      DB_NAME: js_template_fullstack
-      VITE_API_URL: "http://localhost:3310"
-    command: sh -c "npm run dev"
+      DB_USER: root
+      DB_PASSWORD: root
+      DB_NAME: atlas_db
+      CLIENT_URL: http://localhost:3000
     depends_on:
-      database:
-        condition: service_healthy
+      - database
 
-  database:
-    image: mysql/mysql-server:8.0
-    healthcheck:
-      test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost", "-uuser", "-ppassword" ] # Command to check health.
-      interval: 5s # Interval between health checks.
-      timeout: 5s # Timeout for each health checking.
-      retries: 20 # Hou many times retries.
-      start_period: 10s
-    volumes:
-      - ./database-setup.sh:/docker-entrypoint-initdb.d/setup.sh
-    #      - db-data:/var/lib/mysql
-    environment:
-      MYSQL_USER: user
-      MYSQL_PASSWORD: password
-      # Password for root access
-      MYSQL_ROOT_PASSWORD: rootpassword
+  frontend:
+    build: ./client
     ports:
-      - target: 3306
-        published: 3306
-        protocol: tcp
+      - "3000:3000"
+    environment:
+      VITE_API_URL: http://localhost:3310
+    depends_on:
+      - backend
+
+volumes:
+  atlas_data:
