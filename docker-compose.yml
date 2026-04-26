@@ -9,6 +9,12 @@ services:
       - "3306:3306"
     volumes:
       - atlas_data:/var/lib/mysql
+      - ./server/database/schema.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
   backend:
     build: ./server
     ports:
@@ -24,12 +30,16 @@ services:
       DB_NAME: atlas_db
       CLIENT_URL: http://localhost:3000
     depends_on:
-      - database
+      database:
+        condition: service_healthy
 
   frontend:
     build: ./client
     ports:
       - "3000:3000"
+    volumes:
+      - ./client:/app
+      - /app/node_modules
     environment:
       VITE_API_URL: http://localhost:3310
     depends_on:
