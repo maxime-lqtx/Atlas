@@ -26,7 +26,7 @@ if (process.env.CLIENT_URL != null) {
     cors({
       origin: [process.env.CLIENT_URL],
       // origin: 'http://localhost:8080',
-      methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+      methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
       credentials: true,
     }),
   );
